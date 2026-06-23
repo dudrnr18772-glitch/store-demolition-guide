@@ -1,0 +1,9 @@
+[build]
+command = "npm run build"
+publish = "out"
+
+[build.environment]
+NODE_VERSION = "20"
+NEXT_PUBLIC_SITE_URL = "https://store-demolition-guide.netlify.app"
+GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQM4PA0V3kPuQXoYrYKkKwOSH73YAMtIju5Edj_Q_VOV1FXQsF9Ln_dkC5VS3FK8AFkASTFxCX-xseM/pub?gid=0&single=true&output=csv"
+NEXT_PUBLIC_CTA_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfdzNitwdwclnvlcy6wj8D73z8kBuRSHsiyCp-L3XB9agx9bQ/viewform?usp=header"
