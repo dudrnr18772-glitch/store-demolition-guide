@@ -48,7 +48,7 @@ export default async function DetailPage({params}:Props){
  const schema={"@context":"https://schema.org","@type":"WebPage","name":title,"description":description,"url":getPageUrl(slug)};
  return <div className="editorial-shell">
  <SafeSchema data={schema}/><SafeSchema data={bread}/>
- <header className="editorial-header"><div className="editorial-header-inner"><Link href="/" className="editorial-logo">▤ 원상복구 업체</Link><a className="editorial-cta" href={CTA_URL} target="_blank" rel="noopener noreferrer">견적 상담 신청 ↗</a></div></header>
+ <header className="editorial-header"><div className="editorial-header-inner"><Link href="/" className="editorial-logo"><img src="/brand/brand-mark.svg" width={36} height={36} alt="" aria-hidden="true" /><span>원상복구 업체</span></Link><a className="editorial-cta" href={CTA_URL} target="_blank" rel="noopener noreferrer">견적 상담 신청 ↗</a></div></header>
  <main className="editorial-main"><nav className="editorial-crumb"><Link href="/">홈</Link> <span>›</span> {keyword}</nav>
  <article><div className="editorial-hero"><div><p className="editorial-overline">공사 범위·견적·인도 확인</p><h1>{priority?.title??keyword}</h1><p>{priority?.summary??content?.summary.join(' ')}</p><a className="editorial-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">원상복구 상담 신청 ↗</a></div><img src={priority?.slug.includes('cafe')||priority?.slug.includes('restaurant')?'/assets/service-cafe.webp':priority?.slug.includes('closure')?'/assets/service-demolition.webp':'/assets/hero-interior.webp'} alt={`${keyword} 관련 공간 및 철거 참고 이미지`} loading="eager" /></div>
  {priority?<>

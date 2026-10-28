@@ -5,7 +5,11 @@ const SITE = "https://store-demolition-guide.netlify.app";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   applicationName: "원상복구 업체",
-  icons: { icon: "/favicon.ico", shortcut: "/favicon.ico" },
+  icons: {
+    shortcut: [{ url: `${SITE}/favicon.ico`, type: "image/x-icon" }],
+    apple: [{ url: `${SITE}/apple-touch-icon.png`, sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/site.webmanifest",
   title: "원상복구 업체",
   description: "상가·점포·사무실 원상복구와 폐업철거의 공사 범위, 견적 검토, 폐기물 처리를 안내합니다.",
   verification: {

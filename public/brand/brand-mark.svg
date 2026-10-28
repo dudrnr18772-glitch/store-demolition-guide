@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 128 128" role="img" aria-label="원상복구 업체 로고 심볼">
+<rect x="1" y="1" width="126" height="126" rx="26" fill="#153F36"/>
+<path d="M29 57 64 28 99 57" fill="none" stroke="#FFFFFF" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M36 59v26m56-26v26" fill="none" stroke="#FFFFFF" stroke-width="9.5" stroke-linecap="round"/>
+<path d="M57 53h15v15H57z" fill="#CDE6C6" rx="1.5"/>
+<path d="M26 92c20 20 55 23 77-6" fill="none" stroke="#D1B274" stroke-width="9.5" stroke-linecap="round"/>
+<path d="m87 86 19-4-1 19" fill="none" stroke="#D1B274" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

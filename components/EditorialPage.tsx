@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import type {Editorial} from '@/lib/editorial-content';
 import {guideLinks} from '@/lib/editorial-content';
@@ -14,7 +15,7 @@ export default function EditorialPage({page,group}:{page:Editorial;group:'servic
  ]};
  return <div className="editorial-shell">
   <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,'\\u003c')}} />
-  <header className="editorial-header"><div className="editorial-header-inner"><Link href="/" className="editorial-logo">▤ 원상복구 업체</Link><a href={CTA_URL} className="editorial-cta" target="_blank" rel="noopener noreferrer">견적 상담 신청 ↗</a></div></header>
+  <header className="editorial-header"><div className="editorial-header-inner"><Link href="/" className="editorial-logo"><img src="/brand/brand-mark.svg" width={36} height={36} alt="" aria-hidden="true" /><span>원상복구 업체</span></Link><a href={CTA_URL} className="editorial-cta" target="_blank" rel="noopener noreferrer">견적 상담 신청 ↗</a></div></header>
   <main className="editorial-main"><nav className="editorial-crumb"><Link href="/">홈</Link> <span>›</span> {page.lead}</nav>
   <article><div className="editorial-hero"><div><p className="editorial-overline">철거·원상복구 실무 가이드</p><h1>{page.title}</h1><p>{page.intro}</p><a className="editorial-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">공사 범위 상담하기 ↗</a></div><img src={page.image} alt={`${page.lead} 관련 상가·공사 이미지`} loading="eager" /></div>
   <div className="editorial-body">{page.sections.map((section,index)=><section key={section.heading} className="editorial-block"><div className="editorial-count">0{index+1}</div><h2>{section.heading}</h2><p>{section.body}</p><ul>{section.items.map(item=><li key={item}>{item}</li>)}</ul></section>)}</div>

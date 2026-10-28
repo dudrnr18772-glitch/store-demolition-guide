@@ -22,6 +22,7 @@ export default function Home() {
   const schema = {"@context":"https://schema.org","@graph":[
     {"@type":"WebSite","@id":"https://store-demolition-guide.netlify.app/#website","url":"https://store-demolition-guide.netlify.app/","name":"원상복구 업체","inLanguage":"ko"},
     {"@type":"WebPage","@id":"https://store-demolition-guide.netlify.app/#webpage","url":"https://store-demolition-guide.netlify.app/","name":"원상복구 업체","isPartOf":{"@id":"https://store-demolition-guide.netlify.app/#website"}},
+    {"@type":"Organization","@id":"https://store-demolition-guide.netlify.app/#organization","name":"원상복구 업체","url":"https://store-demolition-guide.netlify.app/","logo":{"@type":"ImageObject","url":"https://store-demolition-guide.netlify.app/favicon-512.png","width":512,"height":512}},
     {"@type":"Service","name":"상가·점포·사무실 원상복구 및 내부철거","serviceType":"원상복구·철거 상담","areaServed":{"@type":"Country","name":"KR"}}
   ]};
   return <>
