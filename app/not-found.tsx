@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function NotFound(){return <main style={{maxWidth:720,margin:'100px auto',padding:'0 24px',fontFamily:'sans-serif'}}><p style={{color:'#567c64'}}>404 · 페이지를 찾을 수 없습니다</p><h1 style={{fontSize:36}}>요청하신 페이지가 없습니다.</h1><p>주소가 변경되었거나 제공되지 않는 페이지일 수 있습니다.원상복구 관련 서비스와 가이드는 홈페이지에서 확인해 주세요.</p><Link href="/" style={{display:'inline-block',padding:16,background:'#174c3f',color:'white',borderRadius:10}}>원상복구 업체 홈으로</Link></main>}

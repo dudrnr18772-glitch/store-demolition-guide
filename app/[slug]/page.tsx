@@ -1,329 +1,64 @@
 /* eslint-disable @next/next/no-img-element */
-import type { Metadata } from "next";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import type {Metadata} from 'next';
+import Link from 'next/link';
+import {notFound} from 'next/navigation';
 import {
-  getCtaLeadText,
-  getCtaText,
-  getDescription,
-  getDetailContent,
-  getDisplayKeyword,
-  getFaqItems,
-  getHeroTitle,
-  getRelatedAnchorText,
-  getRelatedBadgeText,
-  getRelatedCardText,
-  getRelatedPages,
-  getTitle,
-} from "@/lib/detail-content";
-import { getPageBySlug, getPublishedPages } from "@/lib/pages";
-import {
-  CTA_URL,
-  getAssetUrl,
-  getPageUrl,
-  LANDING_IMAGE,
-  THUMBNAIL_IMAGE,
-} from "@/lib/site";
+  getDetailContent,getDescription,getDisplayKeyword,getFaqItems,
+  getRelatedPages,getTitle
+} from '@/lib/detail-content';
+import {getPageBySlug,getPublishedPages} from '@/lib/pages';
+import {CTA_URL,getPageUrl} from'@/lib/site';
+import {guideLinks} from '@/lib/editorial-content';
+import {priorityMap} from '@/lib/priority-pages';
+import '../editorial.css';
 
-type PageProps = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
-
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return getPublishedPages().map((page) => ({
-    slug: page.slug,
-  }));
+type Props={params:Promise<{slug:string}>};
+export const dynamicParams=false;
+export function generateStaticParams(){return getPublishedPages().map(p=>({slug:p.slug}));}
+export async function generateMetadata({params}:Props):Promise<Metadata>{
+ const {slug}=await params;const record=getPageBySlug(slug);
+ if(!record)return {title:'페이지를 찾을 수 없습니다'};
+ const priority=priorityMap.get(slug);
+ const title=priority?.title??getTitle(record);
+ const description=priority?.description??getDescription(record);
+ return {title,description,alternates:{canonical:getPageUrl(slug)},openGraph:{title,description,url:getPageUrl(slug),siteName:'원상복구 업체',images:['/assets/hero-interior.webp'],type:'article'},twitter:{card:'summary_large_image',title,description}};
 }
-
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const page = getPageBySlug(slug);
-
-  if (!page) {
-    return {
-      title: "페이지를 찾을 수 없습니다 | 폐업 점포철거 안내",
-    };
-  }
-
-  const title = getTitle(page);
-  const description = getDescription(page);
-  const url = getPageUrl(page.slug);
-  const imageUrl = getAssetUrl(THUMBNAIL_IMAGE);
-  const displayKeyword = getDisplayKeyword(page);
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
-      title,
-      description,
-      url,
-      type: "article",
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: `${displayKeyword} 안내 썸네일`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [imageUrl],
-    },
-  };
-}
-
-function JsonLd({ data }: { data: unknown }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
-      }}
-    />
-  );
-}
-
-function CtaButton({ children }: { children: React.ReactNode }) {
-  return (
-    <a
-      href={CTA_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(15,23,42,0.18)] transition hover:-translate-y-0.5 hover:bg-slate-800"
-    >
-      {children}
-      <ArrowUpRight className="h-4 w-4" />
-    </a>
-  );
-}
-
-export default async function DetailPage({ params }: PageProps) {
-  const { slug } = await params;
-  const page = getPageBySlug(slug);
-
-  if (!page) {
-    notFound();
-  }
-
-  const allPages = getPublishedPages();
-  const content = getDetailContent(page);
-  const faqItems = getFaqItems(page);
-  const relatedPages = getRelatedPages(page, allPages);
-  const pageUrl = getPageUrl(page.slug);
-  const title = getTitle(page);
-  const description = getDescription(page);
-  const displayKeyword = getDisplayKeyword(page);
-
-  const webPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    name: title,
-    description,
-    url: pageUrl,
-    image: getAssetUrl(THUMBNAIL_IMAGE),
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "홈",
-        item: getPageUrl(""),
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: displayKeyword,
-        item: pageUrl,
-      },
-    ],
-  };
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqItems.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.answer,
-      },
-    })),
-  };
-
-  return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f7fffc_0%,#ffffff_34%,#f3f8fb_100%)] text-slate-900">
-      <JsonLd data={webPageSchema} />
-      <JsonLd data={breadcrumbSchema} />
-      <JsonLd data={faqSchema} />
-
-      <header className="sticky top-0 z-50 border-b border-emerald-100/70 bg-white/85 shadow-sm shadow-emerald-950/5 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-slate-950"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            폐업 점포철거 안내
-          </Link>
-          <CtaButton>{getCtaText(page)}</CtaButton>
-        </div>
-      </header>
-
-      <article className="mx-auto max-w-5xl px-5 py-12 md:py-16">
-        <div className="mb-7 inline-flex rounded-full border border-emerald-200 bg-white/80 px-4 py-2 text-sm font-semibold text-emerald-700 shadow-sm">
-          원상복구 범위와 비용 기준 안내
-        </div>
-
-        <h1 className="max-w-4xl text-balance text-4xl font-semibold tracking-[-0.03em] text-slate-950 md:text-6xl md:leading-[1.04]">
-          {getHeroTitle(page)}
-        </h1>
-
-        <div className="mt-7 max-w-3xl space-y-4 text-lg leading-9 text-slate-600">
-          {content.summary.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
-
-        {content.layout.showTopCta ? (
-          <section className="mt-9 rounded-[2rem] border border-white/80 bg-white/75 p-5 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl md:flex md:items-center md:justify-between md:gap-8 md:p-7">
-            <p className="text-base leading-7 text-slate-700">
-              {getCtaLeadText(page)}
-            </p>
-            <div className="mt-5 shrink-0 md:mt-0">
-              <CtaButton>{getCtaText(page)}</CtaButton>
-            </div>
-          </section>
-        ) : null}
-
-        <section className="my-8 md:my-10">
-          <img
-            src={LANDING_IMAGE}
-            alt={`${displayKeyword} 상세 안내 이미지`}
-            className="h-auto w-full rounded-2xl border border-slate-200 shadow-sm"
-            loading="eager"
-          />
-        </section>
-
-        <div className="space-y-8">
-          {content.sections.map((section) => (
-            <section
-              key={section.title}
-              className="rounded-[2rem] border border-white/80 bg-white/78 p-6 shadow-[0_20px_70px_rgba(15,23,42,0.06)] backdrop-blur-xl md:p-8"
-            >
-              <h2 className="text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
-                {section.title}
-              </h2>
-
-              {section.paragraphs ? (
-                <div className="mt-5 space-y-4 text-base leading-8 text-slate-600">
-                  {section.paragraphs.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
-                </div>
-              ) : null}
-
-              {section.items ? (
-                <ul className="mt-5 grid gap-3 md:grid-cols-2">
-                  {section.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 text-sm leading-7 text-slate-700"
-                    >
-                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-600" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </section>
-          ))}
-        </div>
-
-        <section className="mt-10 rounded-[2rem] border border-white/80 bg-white/80 p-6 shadow-[0_20px_70px_rgba(15,23,42,0.06)] backdrop-blur-xl md:p-8">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
-            {content.layout.faqTitle}
-          </h2>
-          <div className="mt-6 space-y-4">
-            {faqItems.map((item) => (
-              <div
-                key={item.question}
-                className="rounded-2xl border border-slate-200 bg-white p-5"
-              >
-                <h3 className="font-semibold text-slate-950">
-                  {item.question}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  {item.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {relatedPages.length > 0 ? (
-          <section className="mt-10">
-            <h2 className="text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
-              {content.layout.relatedTitle}
-            </h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {relatedPages.map((relatedPage, index) => (
-                <Link
-                  key={relatedPage.slug}
-                  href={`/${relatedPage.slug}/`}
-                  className="group rounded-3xl border border-white/80 bg-white/75 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-emerald-200"
-                >
-                  <p className="text-sm font-semibold text-emerald-700">
-                    {getRelatedBadgeText(page, relatedPage, index)}
-                  </p>
-                  <h3 className="mt-2 text-lg font-semibold text-slate-950">
-                    {getRelatedAnchorText(page, relatedPage)}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">
-                    {getRelatedCardText(relatedPage)}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700">
-                    {content.layout.relatedAction}
-                    <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        <section className="mt-12 overflow-hidden rounded-[2.2rem] bg-[radial-gradient(circle_at_20%_20%,rgba(45,212,191,0.25),transparent_30%),linear-gradient(135deg,#020617_0%,#0f172a_54%,#064e3b_100%)] p-6 text-white shadow-[0_35px_110px_rgba(15,23,42,0.28)] md:p-9">
-          <p className="max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">
-            {getCtaLeadText(page)}
-          </p>
-          <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-            철거비용, 원상복구 범위, 지원 가능성을 함께 확인하면 폐업
-            일정에 맞춘 상담을 더 빠르게 진행할 수 있습니다.
-          </p>
-          <div className="mt-7">
-            <CtaButton>{getCtaText(page)}</CtaButton>
-          </div>
-        </section>
-      </article>
-    </main>
-  );
+function SafeSchema({data}:{data:unknown}){return <script type="application/ld+json"dangerouslySetInnerHTML={{__html:JSON.stringify(data).replace(/</g,'\\u003c')}}/>;}
+export default async function DetailPage({params}:Props){
+ const {slug}=await params;const record=getPageBySlug(slug);if(!record)notFound();
+ const priority=priorityMap.get(slug);
+ const title=priority?.title??getTitle(record);
+ const description=priority?.description??getDescription(record);
+ const keyword=getDisplayKeyword(record);
+ const content=priority?null:getDetailContent(record);
+ const faq=priority?null:getFaqItems(record);
+ const allPages=getPublishedPages();
+ const related=getRelatedPages(record,allPages).filter(p=>p.slug!==slug).slice(0,4);
+ const relevant=priority?.relevant??(
+  slug.endsWith('closure-support')?['/guides/closure-support/','/services/closure-demolition/','/guides/contract-checklist/']:
+  slug.includes('cost')?['/guides/cost-checklist/','/guides/contract-checklist/','/services/commercial-restoration/']:
+slug.includes('cafe')||slug.includes('restaurant')?['/services/cafe-demolition/','/guides/waste-disposal/','/guides/cost-checklist/']:
+  slug.includes('store')||slug.includes('shop')?['/services/store-restoration/','/guides/cost-checklist/','/guides/work-process/']:
+  ['/services/commercial-restoration/','/guides/contract-checklist/','/guides/cost-checklist/']
+ );
+ const links=guideLinks.filter(x=>relevant.includes(x.href));
+ const bread={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+  {"@type":"ListItem","position":1,"name":"원상복구 업체","item":getPageUrl('')},
+  {"@type":"ListItem","position":2,"name":keyword,"item":getPageUrl(slug)}]};
+ const schema={"@context":"https://schema.org","@type":"WebPage","name":title,"description":description,"url":getPageUrl(slug)};
+ return <div className="editorial-shell">
+ <SafeSchema data={schema}/><SafeSchema data={bread}/>
+ <header className="editorial-header"><div className="editorial-header-inner"><Link href="/" className="editorial-logo">▤ 원상복구 업체</Link><a className="editorial-cta" href={CTA_URL} target="_blank" rel="noopener noreferrer">견적 상담 신청 ↗</a></div></header>
+ <main className="editorial-main"><nav className="editorial-crumb"><Link href="/">홈</Link> <span>›</span> {keyword}</nav>
+ <article><div className="editorial-hero"><div><p className="editorial-overline">공사 범위·견적·인도 확인</p><h1>{priority?.title??keyword}</h1><p>{priority?.summary??content?.summary.join(' ')}</p><a className="editorial-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">원상복구 상담 신청 ↗</a></div><img src={priority?.slug.includes('cafe')||priority?.slug.includes('restaurant')?'/assets/service-cafe.webp':priority?.slug.includes('closure')?'/assets/service-demolition.webp':'/assets/hero-interior.webp'} alt={`${keyword} 관련 공간 및 철거 참고 이미지`} loading="eager" /></div>
+ {priority?<>
+ <section className="editorial-block" style={{marginTop:24}}><p className="editorial-overline">현장별 확인 항목</p><h2>{keyword}, 공사 전에 확인할 사항</h2><p>{priority.summary}</p><ul>{priority.checks.map(item=><li key={item}>{item}</li>)}</ul></section>
+ <section className="editorial-block" style={{marginTop:18}}><h2>견적·일정 검토 시 주의할 점</h2><p>{priority.note}</p><p>철거 범위는 임대차계약서와 현장에 남아 있는 설비의 상태에 따라 달라질 수 있습니다. 사진을 준비해 상담하고 공사 전 인도 기준을 기록해 두세요.</p></section>
+ </>:<div className="editorial-body">{content?.sections.map((sec,i)=><section className="editorial-block" key={sec.title}><div className="editorial-count">{String(i+1).padStart(2,'0')}</div><h2>{sec.title}</h2>{sec.paragraphs?.map(par=><p key={par}>{par}</p>)}{sec.items?.length?<ul>{sec.items.map(item=><li key={item}>{item}</li>)}</ul>:null}</section>)}</div>}
+ {(!priority&&faq?.length)?<section className="editorial-faq"><h2>{content?.layout.faqTitle??'자주 묻는 질문'}</h2>{faq.map(x=><divkey={x.question}><h3>{x.question}</h3><p>{x.answer}</p></div>)}</section>:null}
+ {slug.endsWith('closure-support')?<section className="editorial-faq"><h2>폐업철거 지원 안내 확인</h2><p>과거 공고의 접수 기한과 현재 모집 여부는 다릅니다. 지원금 지급이나 상시 접수를 보장하지 않으며 최신 운영기관 공고에서 신청 가능 여부를 확인해야 합니다.</p></section>:null}
+ <section className="editorial-cross"><h2>{keyword} 관련 안내</h2><div className="editorial-links">{links.map(item=><Link href={item.href} key={item.href}>{item.label} <span>→</span></Link>)}</div></section>
+ {related.length?<section className="editorial-cross"><h2>관련 지역·업종 안내</h2><div className="editorial-links">{related.map(item=><Link href={`/${item.slug}/`} key={item.slug}>{getDisplayKeyword(item)} <span>→</span></Link>)}</div></section>:null}
+ <section className="editorial-bottom"><h2>원상복구 범위와 견적을 함께 확인하세요.</h2><p>현장 사진, 공사 희망일, 계약서의 원상복구 조건을 준비하면 상담에 도움이 됩니다.</p><a className="editorial-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">견적 상담 신청 ↗</a></section>
+</article></main><footer className="editorial-footer"><Link href="/">원상복구 업체 홈</Link><span>철거·원상복구 정보와 공사 범위 상담</span></footer></div>;
 }

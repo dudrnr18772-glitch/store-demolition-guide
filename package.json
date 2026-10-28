@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "download:pages": "tsx scripts/download-pages.ts",
     "check:pages": "tsx scripts/check-pages.ts",
-    "generate:static": "tsx scripts/generate-static-files.ts",
-    "prebuild": "npm run download:pages && npm run check:pages && npm run generate:static",
+    "prebuild": "npm run check:pages && node scripts/create-focused-sitemap.mjs",
     "build": "next build",
     "start": "npx serve out",
     "check:output": "tsx scripts/check-build-output.ts",
@@ -24,7 +22,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/papaparse": "^5.5.2",
+    "@types/papaparse":"^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
