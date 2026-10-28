@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Papa from "papaparse";
 import {stripSlashes} from "./site";
+import {isRetiredPage} from "./retired-pages";
 
 export const PAGES_CSV_PATH=path.join(process.cwd(),"data","pages.csv");
 export const REQUIRED_PAGE_COLUMNS=["status","slug","main_keyword","content_angle","tone","manner"] as const;
@@ -28,5 +29,5 @@ let allCache:PageRecord[]|undefined;
 let publishedCache:PageRecord[]|undefined;
 let bySlugCache:Map<string,PageRecord>|undefined;
 export function getAllPages(){if(!allCache){if(!fs.existsSync(PAGES_CSV_PATH))throw new Error(`CSV 파일이 없습니다: ${PAGES_CSV_PATH}. 기존 저장소의 data/pages.csv 파일은 삭제하면 안 됩니다.`);allCache=parsePagesCsv(fs.readFileSync(PAGES_CSV_PATH,'utf8'));}return allCache;}
-export function getPublishedPages(){if(!publishedCache)publishedCache=getAllPages().filter(row=>isPublishedStatus(row.status));return publishedCache;}
+export function getPublishedPages(){if(!publishedCache)publishedCache=getAllPages().filter(row=>isPublishedStatus(row.status)&&!isRetiredPage(row.slug));return publishedCache;}
 export function getPageBySlug(slug:string){if(!bySlugCache)bySlugCache=new Map(getPublishedPages().map(p=>[p.slug,p]));return bySlugCache.get(normalizeSlug(slug))??null;}

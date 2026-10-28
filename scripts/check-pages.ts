@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import Papa from "papaparse";
+import {retiredPageSlugs} from "../lib/retired-pages";
 import {
   isPublishedStatus,
   normalizeSlug,
@@ -97,7 +98,10 @@ function main() {
   }
 
   console.log(`CSV check passed`);
-  console.log(`Published pages: ${publishedCount}`);
+  console.log(`Published rows in source CSV: ${publishedCount}`);
+  const retiredInCsv=[...retiredPageSlugs].filter(slug=>slugMap.has(slug)).length;
+  console.log(`Intentionally retired CSV URLs: ${retiredInCsv}`);
+  console.log(`Active CSV pages: ${publishedCount-retiredInCsv}`);
   console.log(`Pending pages: ${pendingCount}`);
 }
 
