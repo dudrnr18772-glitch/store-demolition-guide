@@ -11,12 +11,29 @@ import {CTA_URL,getPageUrl} from '@/lib/site';
 import {guideLinks} from '@/lib/editorial-content';
 import {priorityMap} from '@/lib/priority-pages';
 import '../editorial.css';
+import ExpandedArticle from '@/components/ExpandedArticle';
+import {expandedDescription, expandedImage, expandedKeywords, getExpandedPage, SITE_URL} from '@/lib/expanded-pages';
+import '../expanded.css';
+
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
 export function generateStaticParams(){return getPublishedPages().map(p=>({slug:p.slug}));}
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {slug}=await params;const record=getPageBySlug(slug);
+ const expanded=getExpandedPage(slug);
+ if(expanded){
+   const url=`${SITE_URL}/${expanded.slug}/`;
+   return {title:`${expanded.title} | 원상복구 업체`,
+     description:expandedDescription(expanded),
+     keywords:expandedKeywords(expanded),
+     alternates:{canonical:url},
+     openGraph:{title:expanded.title,description:expandedDescription(expanded),url,
+       siteName:'원상복구 업체',locale:'ko_KR',type:'article',
+       images:[{url:expandedImage(expanded),alt:`${expanded.keyword} 안내 이미지`}]},
+     twitter:{card:'summary_large_image',title:expanded.title,description:expandedDescription(expanded),images:[expandedImage(expanded)]}};
+ }
+ 
  if(!record)return {title:'페이지를 찾을 수 없습니다'};
  const priority=priorityMap.get(slug);
  const title=priority?.title??getTitle(record);
@@ -25,7 +42,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 }
 function SafeSchema({data}:{data:unknown}){return <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(data).replace(/</g,'\\u003c')}}/>;}
 export default async function DetailPage({params}:Props){
- const {slug}=await params;const record=getPageBySlug(slug);if(!record)notFound();
+ const {slug}=await params;const record=getPageBySlug(slug);const expanded=getExpandedPage(slug);if(expanded)return <ExpandedArticle page={expanded}/>;if(!record)notFound();
  const priority=priorityMap.get(slug);
  const title=priority?.title??getTitle(record);
  const description=priority?.description??getDescription(record);
