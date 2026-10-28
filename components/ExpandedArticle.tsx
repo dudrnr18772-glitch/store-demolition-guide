@@ -83,7 +83,7 @@ export default function ExpandedArticle({ page }: { page: ExpandedPage }) {
             <h1 id="ep-page-title">{page.title}</h1>
             <p className="ep-lead">{page.lead}</p>
             <div className="ep-hero-actions">
-              <a className="ep-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">현장 견적 상담 <spanaria-hidden="true">↗</span></a>
+              <a className="ep-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">현장 견적 상담 <span aria-hidden="true">↗</span></a>
               <a className="ep-outline" href="#first-section">확인 사항 살펴보기 <span aria-hidden="true">↓</span></a>
             </div>
           </div>
@@ -125,7 +125,7 @@ export default function ExpandedArticle({ page }: { page: ExpandedPage }) {
               <div className="ep-related-grid">
                 {related.map((item) => (
                   <Link href={`/${item.slug}/`} key={item.slug}>
-                    <strong>{item.keyword}</strong><span>{item.title}</span><spanclassName="ep-related-arrow">자세히 보기 ↗</span>
+                    <strong>{item.keyword}</strong><span>{item.title}</span><span className="ep-related-arrow">자세히 보기 ↗</span>
                   </Link>
                 ))}
               </div>
