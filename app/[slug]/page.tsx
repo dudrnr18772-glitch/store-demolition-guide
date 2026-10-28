@@ -14,13 +14,23 @@ import '../editorial.css';
 import ExpandedArticle from '@/components/ExpandedArticle';
 import {expandedDescription, expandedImage, expandedKeywords, getExpandedPage, SITE_URL} from '@/lib/expanded-pages';
 import '../expanded.css';
+import RegionalArticle from '@/components/RegionalArticle';
+import {getRegionalPage,regionalPages,REGION_SITE} from '@/lib/regional-pages';
+import '../regional.css';
 
 
 type Props={params:Promise<{slug:string}>};
 export const dynamicParams=false;
-export function generateStaticParams(){return getPublishedPages().map(p=>({slug:p.slug}));}
+export function generateStaticParams(){const slugs=new Set([...getPublishedPages().map(p=>p.slug),...regionalPages.map(p=>p.slug)]);return [...slugs].map(slug=>({slug}));}
 export async function generateMetadata({params}:Props):Promise<Metadata>{
  const {slug}=await params;const record=getPageBySlug(slug);
+ const regional=getRegionalPage(slug);
+ if(regional){const url=`${REGION_SITE}/${regional.slug}/`;return {
+  title:`${regional.title} | 원상복구 업체`,description:regional.description,
+  keywords:[regional.keyword,...regional.focus],alternates:{canonical:url},
+  openGraph:{title:regional.title,description:regional.description,url,siteName:'원상복구 업체',type:'article',locale:'ko_KR',images:[{url:`${REGION_SITE}/assets/${regional.hero}`,alt:regional.visualAlt}]},
+  twitter:{card:'summary_large_image',title:regional.title,description:regional.description,images:[`${REGION_SITE}/assets/${regional.hero}`]}
+ }; }
  const expanded=getExpandedPage(slug);
  if(expanded){
    const url=`${SITE_URL}/${expanded.slug}/`;
@@ -42,7 +52,7 @@ export async function generateMetadata({params}:Props):Promise<Metadata>{
 }
 function SafeSchema({data}:{data:unknown}){return <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(data).replace(/</g,'\\u003c')}}/>;}
 export default async function DetailPage({params}:Props){
- const {slug}=await params;const record=getPageBySlug(slug);const expanded=getExpandedPage(slug);if(expanded)return <ExpandedArticle page={expanded}/>;if(!record)notFound();
+ const {slug}=await params;const regional=getRegionalPage(slug);if(regional)return <RegionalArticle page={regional}/>;const record=getPageBySlug(slug);const expanded=getExpandedPage(slug);if(expanded)return <ExpandedArticle page={expanded}/>;if(!record)notFound();
  const priority=priorityMap.get(slug);
  const title=priority?.title??getTitle(record);
  const description=priority?.description??getDescription(record);

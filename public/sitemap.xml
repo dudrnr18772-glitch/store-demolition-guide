@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://store-demolition-guide.netlify.app/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/regions/</loc></url>
   <url><loc>https://store-demolition-guide.netlify.app/services/commercial-restoration/</loc></url>
   <url><loc>https://store-demolition-guide.netlify.app/services/store-restoration/</loc></url>
   <url><loc>https://store-demolition-guide.netlify.app/services/office-restoration/</loc></url>
@@ -21,4 +22,13 @@
   <url><loc>https://store-demolition-guide.netlify.app/busan-seo-gu-restaurant-demolition/</loc></url>
   <url><loc>https://store-demolition-guide.netlify.app/asan-closure-support/</loc></url>
   <url><loc>https://store-demolition-guide.netlify.app/gumi-closure-support/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/yeoksam-office-restoration/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/seongsu-cafe-demolition/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/seomyeon-restaurant-demolition/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/hongdae-store-demolition/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/yeouido-office-restoration/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/guro-dong-restoration/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/jamsil-store-demolition/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/bupyeong-closure-demolition/</loc></url>
+  <url><loc>https://store-demolition-guide.netlify.app/ingye-dong-store-demolition/</loc></url>
 </urlset>

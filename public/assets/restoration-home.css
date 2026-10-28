@@ -269,3 +269,6 @@ html { scroll-padding-top: 90px; } section[id] { scroll-margin-top: 90px; } @med
 
 /* Shared original restoration brand mark for the main header */
 .brand .brand-mark{display:block;width:36px;height:36px;flex:0 0 36px;border-radius:9px;object-fit:contain}
+
+/* Region navigation links to individually authored restoration guides */
+.regional-tiles-section{padding:76px 0;background:#e9f1e8}.regional-tiles-heading{font-size:clamp(1.55rem,3vw,2.1rem);letter-spacing:-.04em;margin:12px 0;color:#153f36}.regional-tiles-intro{font-size:15px;color:#526b5e;line-height:1.75;margin-bottom:25px}.regional-tiles-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.regional-tiles-link{display:flex;flex-direction:column;gap:5px;padding:18px 21px;border:1px solid #d7e6d8;border-radius:12px;background:#fff;color:#153f36;text-decoration:none}.regional-tiles-link strong{font-size:1rem}.regional-tiles-link small{font-size:.78rem;color:#658072}.regional-tiles-link:hover{border-color:#7ca68e;transform:translateY(-2px)}.regional-tiles-more{display:inline-block;margin-top:20px;text-decoration:underline;color:#174d3d;font-weight:800}@media(max-width:760px){.regional-tiles-section{padding:50px 0}.regional-tiles-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.regional-tiles-grid{grid-template-columns:1fr}}
