@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const html =fs.readFileSync(path.join(process.cwd(), "data", "homepage-body.html"), "utf8");
+  const html = fs.readFileSync(path.join(process.cwd(), "data", "homepage-body.html"), "utf8");
   const schema = {"@context":"https://schema.org","@graph":[
     {"@type":"WebSite","@id":"https://store-demolition-guide.netlify.app/#website","url":"https://store-demolition-guide.netlify.app/","name":"원상복구 업체","inLanguage":"ko"},
     {"@type":"WebPage","@id":"https://store-demolition-guide.netlify.app/#webpage","url":"https://store-demolition-guide.netlify.app/","name":"원상복구 업체","isPartOf":{"@id":"https://store-demolition-guide.netlify.app/#website"}},
@@ -27,7 +27,7 @@ export default function Home() {
   return <>
     <link rel="stylesheet" href="/assets/restoration-home.css" />
     <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,"\\u003c")}} />
-    <divclassName="restoration-home" dangerouslySetInnerHTML={{ __html: html }} />
+    <div className="restoration-home" dangerouslySetInnerHTML={{ __html: html }} />
     <Script src="/assets/restoration-home.js" strategy="afterInteractive" />
   </>;
 }

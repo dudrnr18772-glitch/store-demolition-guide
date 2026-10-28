@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   applicationName: "원상복구 업체",
   icons: { icon: "/favicon.ico", shortcut: "/favicon.ico" },
   title: "원상복구 업체",
-description: "상가·점포·사무실 원상복구와 폐업철거의 공사 범위, 견적 검토, 폐기물 처리를 안내합니다.",
+  description: "상가·점포·사무실 원상복구와 폐업철거의 공사 범위, 견적 검토, 폐기물 처리를 안내합니다.",
   verification: {
     google: "rreeR_wyCoqw2z7nCk7X6Alq5HTTFEgx4gVcrMeJAbw",
     other: {

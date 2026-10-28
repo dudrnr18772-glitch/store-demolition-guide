@@ -9,7 +9,7 @@ function init(){
     menu.setAttribute('aria-label', opened ? '메뉴 닫기' : '메뉴 열기');
     mobile.classList.toggle('open', opened);
   });
-mobile?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+  mobile?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
     mobile.classList.remove('open');
     menu?.setAttribute('aria-expanded', 'false');
     menu?.setAttribute('aria-label', '메뉴 열기');

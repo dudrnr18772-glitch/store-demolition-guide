@@ -10,7 +10,7 @@ export type PageRecord={status:PageStatus;slug:string;main_keyword:string;conten
 type RawPageRecord=Record<string,unknown>;
 function norm(value:unknown){return String(value??'').trim();}
 export function normalizeSlug(slug:string){const clean=stripSlashes(slug);if(clean.includes('/'))throw new Error(`중간 / 포함 slug: ${slug}`);return clean;}
-export functionisPublishedStatus(status:string){const s=status.trim().toLowerCase();return s==='발행'||s==='publish';}
+export function isPublishedStatus(status:string){const s=status.trim().toLowerCase();return s==='발행'||s==='publish';}
 export function parsePagesCsv(csv:string):PageRecord[]{
  const parsed=Papa.parse<RawPageRecord>(csv,{header:true,skipEmptyLines:'greedy'});
  if(parsed.errors.length)throw new Error(`CSV 파싱 오류: ${parsed.errors.map(x=>x.message).join('; ')}`);
@@ -21,7 +21,7 @@ export function parsePagesCsv(csv:string):PageRecord[]{
   status:norm(row.status),slug:normalizeSlug(norm(row.slug)),main_keyword:norm(row.main_keyword),content_angle:norm(row.content_angle),tone:norm(row.tone),manner:norm(row.manner),
   extra:Object.fromEntries(Object.entries(row).filter(([k])=>!(REQUIRED_PAGE_COLUMNS as readonly string[]).includes(k)).map(([k,v])=>[k,norm(v)]).filter(([,v])=>Boolean(v)))
  })).filter(row=>row.slug&&row.main_keyword);
- const seen=newSet<string>();for(const row of rows){if(seen.has(row.slug))throw new Error(`중복 slug: ${row.slug}`);seen.add(row.slug);}
+ const seen=new Set<string>();for(const row of rows){if(seen.has(row.slug))throw new Error(`중복 slug: ${row.slug}`);seen.add(row.slug);}
  return rows;
 }
 let allCache:PageRecord[]|undefined;
