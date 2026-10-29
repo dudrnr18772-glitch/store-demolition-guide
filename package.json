@@ -11,7 +11,8 @@
     "check:output": "tsx scripts/check-build-output.ts",
     "check:content": "tsx scripts/check-content-quality.ts",
     "preview:content": "tsx scripts/preview-content.ts",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postbuild": "node scripts/check-curated-output.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.21.0",
