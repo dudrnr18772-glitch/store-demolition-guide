@@ -6,6 +6,25 @@ export type ExpandedSection = {
   checks: string[];
 };
 export type ExpandedFaq = { q: string; a: string };
+export type ExpandedTable = {
+  heading: string;
+  intro: string;
+  columns: [string, string, string];
+  rows: [string, string, string][];
+  footnote: string;
+};
+export type ExpandedProcessFlow = {
+  heading: string;
+  steps: { title: string; detail: string }[];
+};
+export type ExpandedAnnouncement = {
+  heading: string;
+  text: string;
+  checkedOn: string;
+  sourceLabel: string;
+  sourceUrl: string;
+};
+export type ExpandedReference = { label: string; url: string };
 export type ExpandedPage = {
   slug: string;
   keyword: string;
@@ -16,6 +35,10 @@ export type ExpandedPage = {
   sections: ExpandedSection[];
   faqs: ExpandedFaq[];
   links: string[];
+  detailTable?: ExpandedTable;
+  processFlow?: ExpandedProcessFlow;
+  announcement?: ExpandedAnnouncement;
+  references?: ExpandedReference[];
 };
 
 export const expandedPages: ExpandedPage[] = rawPages as ExpandedPage[];
