@@ -25,9 +25,21 @@ export function parsePagesCsv(csv:string):PageRecord[]{
  const seen=new Set<string>();for(const row of rows){if(seen.has(row.slug))throw new Error(`중복 slug: ${row.slug}`);seen.add(row.slug);}
  return rows;
 }
+/**
+ * Legacy CSV-generated pages were retired after the site switched to 22 curated
+ * landing pages. The source CSV stays intact for reversible archival.
+ * Emergency rollback: set ENABLE_LEGACY_CSV_PAGES=1 and rebuild.
+ * New regional landing pages use data/regional-pages.json, not this switch.
+ */
+export const CSV_LEGACY_PAGES_ENABLED=process.env.ENABLE_LEGACY_CSV_PAGES==='1';
 let allCache:PageRecord[]|undefined;
 let publishedCache:PageRecord[]|undefined;
 let bySlugCache:Map<string,PageRecord>|undefined;
 export function getAllPages(){if(!allCache){if(!fs.existsSync(PAGES_CSV_PATH))throw new Error(`CSV 파일이 없습니다: ${PAGES_CSV_PATH}. 기존 저장소의 data/pages.csv 파일은 삭제하면 안 됩니다.`);allCache=parsePagesCsv(fs.readFileSync(PAGES_CSV_PATH,'utf8'));}return allCache;}
-export function getPublishedPages(){if(!publishedCache)publishedCache=getAllPages().filter(row=>isPublishedStatus(row.status)&&!isRetiredPage(row.slug));return publishedCache;}
+export function getPublishedPages(){
+ if(!publishedCache)publishedCache=CSV_LEGACY_PAGES_ENABLED
+  ? getAllPages().filter(row=>isPublishedStatus(row.status)&&!isRetiredPage(row.slug))
+  : [];
+ return publishedCache;
+}
 export function getPageBySlug(slug:string){if(!bySlugCache)bySlugCache=new Map(getPublishedPages().map(p=>[p.slug,p]));return bySlugCache.get(normalizeSlug(slug))??null;}
