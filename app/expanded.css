@@ -28,3 +28,26 @@
 .ep-footer{border-top:1px solid #e1e9e1;padding:34px 24px;color:#667e6d;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:13px}.ep-footer a{font-weight:800;color:#315d46}
 @media(max-width:920px){.ep-header-links{display:none}.ep-header-cta{margin-left:auto}.ep-hero{grid-template-columns:1fr}.ep-hero-photo{height:300px;min-height:0;max-height:360px}.ep-body-layout{grid-template-columns:1fr}.ep-side{position:static;grid-template-columns:1fr 1fr}.ep-hero-body{padding:35px}.ep-image-cta{margin-top:26px}}
 @media(max-width:620px){.ep-header-inner{padding:11px 15px;gap:12px;min-height:62px}.ep-brand{font-size:16px;gap:8px}.ep-brandimg{width:32px;height:32px}.ep-header-cta{font-size:12px;padding:10px 11px}.ep-container{padding:0 15px 45px}.ep-breadcrumb{padding:19px 0}.ep-hero{border-radius:15px}.ep-hero-body{padding:30px 22px}.ep-hero h1{font-size:27px}.ep-lead{font-size:14px}.ep-hero-photo{height:225px}.ep-hero-actions .ep-button,.ep-outline{font-size:13px}.ep-content-card,.ep-faq,.ep-related{padding:25px 20px;border-radius:13px;margin-bottom:15px}.ep-content-card p{font-size:14px}.ep-checklist{padding:17px 16px}.ep-side{grid-template-columns:1fr}.ep-related-grid{grid-template-columns:1fr}.ep-bottom-cta{padding:26px 22px}.ep-bottom-cta h2{font-size:22px}.ep-image-cta img{border-radius:8px}}
+
+/* Contract, cost, office, cafe and 2026 assistance verification components */
+.ep-official-alert{margin:18px 0 0;border:1px solid #ca744b;background:#fff7ed;border-radius:13px;padding:18px 20px;color:#653d24}
+.ep-official-alert strong{display:block;font-size:16px;line-height:1.5;color:#8c3b20}
+.ep-official-alert p{margin:9px 0;font-size:14px;line-height:1.8}
+.ep-official-meta{display:flex;gap:7px 18px;flex-wrap:wrap;font-size:12px;line-height:1.7}
+.ep-official-meta a{font-weight:750;text-decoration:underline;color:#6b391b}
+.ep-process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;list-style:none;padding:0;margin:19px 0 0}
+.ep-process-steps li{min-width:0;padding:16px;border:1px solid #dbe9db;border-radius:12px;background:#f6faf6}
+.ep-step-number{font-size:12px;font-weight:900;color:#327d50;display:block;margin-bottom:8px}
+.ep-process-steps strong{display:block;font-size:14px;color:#204c38;line-height:1.45}
+.ep-process-steps p{font-size:13px;line-height:1.75;margin:6px 0 0;color:#486354}
+.ep-table-scroll{width:100%;overflow-x:auto;margin-top:16px;border:1px solid #dbe6dc;border-radius:13px}
+.ep-comparison table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.7;min-width:500px;text-align:left}
+.ep-comparison thead{background:#e8f3e9}
+.ep-comparison th,.ep-comparison td{padding:13px 14px;vertical-align:top;border-bottom:1px solid #e1e9e3}
+.ep-comparison th{font-weight:750;color:#23533d}
+.ep-comparison tbody tr:last-child th,.ep-comparison tbody tr:last-child td{border-bottom:0}
+.ep-comparison .ep-table-footnote{font-size:13px;margin-top:13px;color:#52705c}
+.ep-references ul{margin:8px 0 0;padding-left:22px;line-height:1.9}
+.ep-references a{color:#285e45;text-decoration:underline}
+@media(max-width:620px){.ep-process-steps{grid-template-columns:1fr 1fr}.ep-official-alert{padding:16px}}
+@media(max-width:385px){.ep-process-steps{grid-template-columns:1fr}}
