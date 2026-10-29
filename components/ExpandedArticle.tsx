@@ -82,6 +82,16 @@ export default function ExpandedArticle({ page }: { page: ExpandedPage }) {
             <p className="ep-eyebrow">철거·원상복구 현장 안내</p>
             <h1 id="ep-page-title">{page.title}</h1>
             <p className="ep-lead">{page.lead}</p>
+            {page.announcement && (
+              <div className="ep-official-alert" role="note" aria-label="지원사업 최신 접수 상태">
+                <strong>{page.announcement.heading}</strong>
+                <p>{page.announcement.text}</p>
+                <div className="ep-official-meta">
+                  <span>확인일: {page.announcement.checkedOn}</span>
+                  <a href={page.announcement.sourceUrl} target="_blank" rel="noopener noreferrer">{page.announcement.sourceLabel} ↗</a>
+                </div>
+              </div>
+            )}
             <div className="ep-hero-actions">
               <a className="ep-button" href={CTA_URL} target="_blank" rel="noopener noreferrer">현장 견적 상담 <span aria-hidden="true">↗</span></a>
               <a className="ep-outline" href="#first-section">확인 사항 살펴보기 <span aria-hidden="true">↓</span></a>
@@ -113,7 +123,42 @@ export default function ExpandedArticle({ page }: { page: ExpandedPage }) {
                 </div>
               </section>
             ))}
-            {isSupport && <p className="ep-support-note">지원사업은 모집 시기, 신청 자격과 공사 진행 단계에 따라 달라질 수 있습니다. 신청 가능 여부는 최신 공식 공고에서 확인하시기 바랍니다.</p>}
+            {page.processFlow && (
+              <section className="ep-content-card ep-process" aria-labelledby="process-flow-heading">
+                <h2 id="process-flow-heading">{page.processFlow.heading}</h2>
+                <ol className="ep-process-steps">
+                  {page.processFlow.steps.map((step, i) => (
+                    <li key={step.title}>
+                      <span className="ep-step-number">{String(i + 1).padStart(2, "0")}</span>
+                      <strong>{step.title}</strong>
+                      <p>{step.detail}</p>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            )}
+            {page.detailTable && (
+              <section className="ep-content-card ep-comparison" aria-labelledby="comparison-heading">
+                <h2 id="comparison-heading">{page.detailTable.heading}</h2>
+                <p>{page.detailTable.intro}</p>
+                <div className="ep-table-scroll">
+                  <table>
+                    <thead><tr>{page.detailTable.columns.map((heading) => <th key={heading} scope="col">{heading}</th>)}</tr></thead>
+                    <tbody>{page.detailTable.rows.map((row, i) => (
+                      <tr key={i}>{row.map((value, j) => j === 0 ? <th scope="row" key={j}>{value}</th> : <td key={j}>{value}</td>)}</tr>
+                    ))}</tbody>
+                  </table>
+                </div>
+                <p className="ep-table-footnote">{page.detailTable.footnote}</p>
+              </section>
+            )}
+            {isSupport && <p className="ep-support-note">2026년 희망리턴패키지 점포철거비 신규 신청은 10월 21일 18:00에 마감됐습니다. 이후 공고의 신청 자격과 접수 기간은 담당 기관의 최신 안내에서 확인하세요.</p>}
+            {page.references?.length ? (
+              <section className="ep-content-card ep-references">
+                <h2>관련 공공기관 자료</h2>
+                <ul>{page.references.map((source) => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a></li>)}</ul>
+              </section>
+            ) : null}
             <section className="ep-faq" id="faqs">
               <h2>{page.keyword} 자주 묻는 질문</h2>
               {page.faqs.map((faq) => (
